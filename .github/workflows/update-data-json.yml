@@ -1,7 +1,7 @@
 on:
   schedule:
     # Run every hour, on the hour.
-    - cron:  '*/15 * * * *'
+    - cron:  '*/10 * * * *'
 
 name: Check for metadata json changes
 
@@ -15,16 +15,14 @@ jobs:
         run: curl "https://api.census.gov/data.json" -o data/data.json
           
       # Compare the response to the previous run, using a hash of the response as the cache key
-      - name: Fetch Cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: data/data.json
-          key: ${{ hashFiles('data/data.json') }}
+      #- name: Fetch Cache
+      #  id: cache
+      #  uses: actions/cache@v4
+      #  with:
+      #    path: data/data.json
+      #    key: ${{ hashFiles('data/data.json') }}
 
-      # If there was not a cache hit (meaning the response changed), notify me via text message
-      # See https://github.com/twilio-labs/actions-sms for setup instructions
-      # You could use a different notification action here, so long as you include the `if` condition below
+      # Commit changes
       - uses: actions/checkout@v4
         # if: steps.cache.outputs.cache-hit != 'true'
       - name: If data has changed, commit
