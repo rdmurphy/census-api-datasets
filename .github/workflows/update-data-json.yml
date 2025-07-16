@@ -21,17 +21,17 @@ jobs:
         with:
           path: data/data.json
           key: ${{ hashFiles('data/data.json') }}
-      
-      # Update timestamp in update-time.txt
-      - name: Update timestamp
-        run: echo "$(TZ=:America/New_York date)" > update-time.txt
 
       # If there was not a cache hit (meaning the response changed), notify me via text message
       # See https://github.com/twilio-labs/actions-sms for setup instructions
       # You could use a different notification action here, so long as you include the `if` condition below
       - name: If data has changed, commit
+        uses: actions/checkout@v4
         # if: steps.cache.outputs.cache-hit != 'true'
-        run: |-
+        run: |
+          # Update timestamp in update-time.txt
+          echo "$(TZ=:America/New_York date)" > update-time.txt
+          # Commit 
           git config user.name "Automated"
           git config user.email "actions@users.noreply.github.com"
           git add -A
