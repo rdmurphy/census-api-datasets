@@ -29,9 +29,12 @@ jobs:
         run: |
           # Update timestamp in update-time.txt
           echo "$(TZ=:America/New_York date)" > update-time.txt
-          # Commit 
-          git config user.name "Automated"
-          git config user.email "actions@users.noreply.github.com"
+
+          # Configure git user
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Commit files
           git add .
           timestamp=$(TZ=:America/New_York date)
           git commit -m "Update data ${timestamp}" || exit 0
