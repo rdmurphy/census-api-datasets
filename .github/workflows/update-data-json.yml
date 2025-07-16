@@ -25,16 +25,16 @@ jobs:
       # If there was not a cache hit (meaning the response changed), notify me via text message
       # See https://github.com/twilio-labs/actions-sms for setup instructions
       # You could use a different notification action here, so long as you include the `if` condition below
-      - name: If data has changed, commit
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         # if: steps.cache.outputs.cache-hit != 'true'
+      - name: If data has changed, commit
         run: |
           # Update timestamp in update-time.txt
           echo "$(TZ=:America/New_York date)" > update-time.txt
           # Commit 
           git config user.name "Automated"
           git config user.email "actions@users.noreply.github.com"
-          git add -A
+          git add .
           timestamp=$(TZ=:America/New_York date)
           git commit -m "Update data ${timestamp}" || exit 0
           git push
